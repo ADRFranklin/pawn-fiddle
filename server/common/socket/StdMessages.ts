@@ -4,7 +4,8 @@ import { IExtendedSocket } from './interfaces';
 
 export default abstract class StdMessages {
   static sendToast(socket: Socket, message: string, icon: string, intent: string): Socket {
-    return socket.emit('toast', { message, icon, intent });
+    socket.emit('toast', { message, icon, intent });
+    return socket;
   }
 
   static sendErrorMessage(socket: Socket, message: string): Socket {
@@ -12,9 +13,10 @@ export default abstract class StdMessages {
   }
 
   static sendScriptExecutionState(socket: IExtendedSocket): Socket {
-    return socket.emit('setScriptExecutionState', { 
+    socket.emit('setScriptExecutionState', {
       isProcessing: socket.isProcessing,
       isRunning: socket.isRunning
     });
+    return socket;
   }
 }
