@@ -11,21 +11,21 @@ RUN dpkg --add-architecture i386 && \
 RUN DEBIAN_FRONTEND=noninteractive apt install -y firejail
 
 # SA-MP PAWN FIDDLE
-WORKDIR /usr/src/app
+WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-WORKDIR /usr/src/app/ui
+WORKDIR /app/ui
 COPY ./ui/package.json .
 COPY ./ui/yarn.lock .
 RUN yarn install
 
-WORKDIR /usr/src/app
+WORKDIR /app
 COPY . .
 RUN npm run compile
 
-#WORKDIR /usr/src/app/ui
-#RUN yarn build
+WORKDIR /app/ui
+RUN yarn build
 
-WORKDIR /usr/src/app
-ENTRYPOINT [ "npm", "start" ]
+WORKDIR /app
+ENTRYPOINT ["npm", "start"]

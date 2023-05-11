@@ -4,7 +4,7 @@
     "service": "vscode",
     "runServices": ["vscode"],
     "shutdownAction": "stopCompose",
-    "postCreateCommand": "yarn workspaces focus --all",
+    "postCreateCommand": "yarn",
     "workspaceFolder": "/workspace",
     "forwardPorts": [3000],
     // "overrideCommand": "",
