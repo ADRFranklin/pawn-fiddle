@@ -24,7 +24,7 @@ export default class SocketServer {
     'HTTP',
     'HttpGet',
     'HttpGetThreaded',
-    'Request', 
+    'Request',
     'RequestJSON',
     'WebSocketClient',
     'JsonWebSocketClient',
@@ -68,7 +68,7 @@ export default class SocketServer {
       socket.composing = true;
       socket.fiddleID = await adjectiveAdjectiveAnimal('pascal');
       // The socket may contain a title and dependencies already if the connection was lost before and the reset-process was faster than generating a fiddleID
-      socket.title = socket.title || ''; 
+      socket.title = socket.title || '';
       socket.dependencies = socket.dependencies || [];
       socket.content = socket.content || '#include <a_samp>\n\nmain()\n{\n    \n}\n';
 
@@ -78,7 +78,7 @@ export default class SocketServer {
       socket.emit('setContentLockState', true); // If we're not in compose mode, lock the content
 
       socket.fiddleInstance = new Fiddle();
-      
+
       if (!await socket.fiddleInstance.setData(fiddleID))
         return socket.emit('showErrorDialog', 'There was an error loading your fiddle.');
 
@@ -90,7 +90,7 @@ export default class SocketServer {
 
       if (!socket.title)
         return socket.emit('showErrorDialog', 'Fiddle not found.');
-      
+
       socket.emit('setTitle', socket.title);
       socket.emit('setDependencies', socket.dependencies);
       socket.emit('setContent', socket.content);
@@ -166,9 +166,9 @@ export default class SocketServer {
 
     if (!socket.fiddleInstance)
       socket.fiddleInstance = new Fiddle();
-    
+
     await socket.fiddleInstance.setData(socket.fiddleID, socket.title, socket.dependencies, socket.content);
-    
+
     if (!socket.fiddleInstance || !await socket.fiddleInstance.save()) {
       socket.isProcessing = false;
       socket.isRunning = false;
@@ -189,7 +189,7 @@ export default class SocketServer {
       StdMessages.sendScriptExecutionState(socket);
       return StdMessages.sendErrorMessage(socket, 'Could not build your fiddle. (Are you trying to fork it while running?)');
     }
-    
+
     const build: IBuildResponse = await socket.fiddleInstance.build();
     if (!build.success) {
       socket.isProcessing = false;
@@ -226,7 +226,7 @@ export default class SocketServer {
   onStopScript(socket: IExtendedSocket): any {
     if (!socket.isRunning)
       return StdMessages.sendErrorMessage(socket, 'Invalid request. (Your script is not running yet)');
-    
+
     if (socket.fiddleInstance)
       socket.fiddleInstance.terminate(); // We just hope that the client was subscribed to the error / close event
   }
@@ -243,12 +243,12 @@ export default class SocketServer {
 
     if (!socket.title || socket.title.trim() === '') // empty title
       socket.title = `${socket.fiddleID}.pwn`;
-    
+
     await socket.fiddleInstance.setData(socket.fiddleID, socket.title, socket.dependencies, socket.content);
-    
+
     if (!await socket.fiddleInstance.save(true))
       return StdMessages.sendErrorMessage(socket, 'An error happened while publishing you fiddle.');
-    
+
     socket.composing = false;
     socket.emit('setContentLockState', !socket.composing);
     socket.emit('setTitle', socket.title);
@@ -260,7 +260,7 @@ export default class SocketServer {
   async onFork(socket: IExtendedSocket): Promise<any> {
     if (socket.composing)
       return StdMessages.sendErrorMessage(socket, 'Invalid request. (You are not viewing a fiddle.)');
-    
+
     socket.fiddleInstance = null;
 
     const forkSuffix: string = ' - Fork';
@@ -268,7 +268,7 @@ export default class SocketServer {
 
     if ((previousTitle + forkSuffix).length <= 100)
       socket.title += forkSuffix;
-    
+
     socket.fiddleID = await adjectiveAdjectiveAnimal('pascal');
 
     socket.composing = true;
