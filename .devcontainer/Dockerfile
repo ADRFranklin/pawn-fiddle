@@ -33,3 +33,5 @@ RUN wget -qO - https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 
 RUN apt-get -yqq update && \
     apt-get -yqq install yarn=${YARN_VERSION}-1
+
+RUN apt install -y firejail
