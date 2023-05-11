@@ -20,4 +20,5 @@ services:
       - ~/.gitconfig:/root/.gitconfig:z
     environment:
       - TZ=Europe\London
+      - NODE_OPTIONS=--openssl-legacy-provider
     entrypoint: ['zsh', '-c', 'while sleep 1000; do :; done']
