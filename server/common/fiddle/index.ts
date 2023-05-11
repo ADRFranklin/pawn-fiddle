@@ -144,7 +144,7 @@ export default class Fiddle {
 
   async ensure(): Promise<boolean> {
     try {
-      const process = await execa('sampctl', ['package', 'ensure'], {
+      const process = await execa('sampctl', ['ensure'], {
         cwd: this.getFiddleRootPath()
       });
 
@@ -159,7 +159,7 @@ export default class Fiddle {
 
   async build(): Promise<IBuildResponse> {
     try {
-      const process = await execa('sampctl', ['package', 'build'], {
+      const process = await execa('sampctl', ['build'], {
         cwd: this.getFiddleRootPath()
       });
 
@@ -207,13 +207,12 @@ export default class Fiddle {
     try {
       if (this.process)
         return false;
-      
+
       // TODO: Readd docker (docker-in-docker) support to run fiddles in a container
       this.process = execa('firejail', [
         '--overlay-tmpfs',
         '-c',
         'sampctl',
-        'package',
         'run'
       ], {
         cwd: path.resolve(this.getFiddleRootPath())
@@ -253,7 +252,7 @@ export default class Fiddle {
 
       l.debug('[CONSOLE]', `[${Fiddle.getUUIDbyFiddleID(socket.fiddleID)}]`, bufferString);
 
-      if (line.match(/Server\sPlugins/g)) 
+      if (line.match(/Server\sPlugins/g))
         packagesDownloaded = true;
 
       if (packagesDownloaded)
@@ -266,7 +265,7 @@ export default class Fiddle {
       this.process = null;
       callback(socket);
     });
-    
+
     this.process.on('close', () => {
       this.process = null;
       callback(socket);
@@ -275,7 +274,7 @@ export default class Fiddle {
     /*
      * TODO: Hide update messages when server shuts down / crashes:
      *
-     * INFO: 
+     * INFO:
      * -
      *
      * INFO: sampctl version 1.8.38 available!
