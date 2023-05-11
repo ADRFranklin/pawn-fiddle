@@ -2,11 +2,11 @@ import pino from 'pino';
 
 // @ts-ignore
 const l = pino({
-  level: process.env.LOG_LEVEL,
+  level: process.env.LOG_LEVEL || 'info',
   name: process.env.APP_ID,
   prettyPrint: {
-    colorize: true,
-    translateTime: 'HH:MM:ss'
+    forceColor: true,
+    timeTransOnly: true,
   }
 });
 
